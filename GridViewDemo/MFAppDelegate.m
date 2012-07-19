@@ -8,6 +8,8 @@
 
 #import "MFAppDelegate.h"
 
+#import "MFMainViewController.h"
+
 @implementation MFAppDelegate
 
 @synthesize window = _window;
@@ -21,7 +23,16 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
+
+    application.statusBarStyle = UIStatusBarStyleBlackTranslucent;
+
+    MFMainViewController *mainViewController = [[[MFMainViewController alloc] init] autorelease];
+    mainViewController.wantsFullScreenLayout = YES;
+    UINavigationController *navigationController = [[[UINavigationController alloc] initWithRootViewController:mainViewController] autorelease];
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+
+    self.window.rootViewController = navigationController;
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

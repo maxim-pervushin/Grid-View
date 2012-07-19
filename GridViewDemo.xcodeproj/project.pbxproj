@@ -13,6 +13,11 @@
 		C5A657AC15B8255300040BDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C5A657AA15B8255300040BDB /* InfoPlist.strings */; };
 		C5A657AE15B8255300040BDB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A657AD15B8255300040BDB /* main.m */; };
 		C5A657B215B8255300040BDB /* MFAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A657B115B8255300040BDB /* MFAppDelegate.m */; };
+		C5A657BC15B8258000040BDB /* MFMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A657BB15B8258000040BDB /* MFMainViewController.m */; };
+		C5A657C415B8267800040BDB /* MFGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A657BF15B8267800040BDB /* MFGridView.m */; };
+		C5A657C515B8267800040BDB /* MFGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A657C115B8267800040BDB /* MFGridViewCell.m */; };
+		C5A657C615B8267800040BDB /* MFGridViewIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A657C315B8267800040BDB /* MFGridViewIndex.m */; };
+		C5A657C915B8285700040BDB /* MFCustomGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A657C815B8285700040BDB /* MFCustomGridViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,12 +25,22 @@
 		C5A657A115B8255300040BDB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C5A657A315B8255300040BDB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C5A657A515B8255300040BDB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		C5A657A915B8255300040BDB /* GridViewDemo-Info.plist */ = {isa = PBXFileReference; path = "GridViewDemo-Info.plist"; sourceTree = "<group>"; };
+		C5A657A915B8255300040BDB /* GridViewDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GridViewDemo-Info.plist"; sourceTree = "<group>"; };
 		C5A657AB15B8255300040BDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C5A657AD15B8255300040BDB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C5A657AF15B8255300040BDB /* GridViewDemo-Prefix.pch */ = {isa = PBXFileReference; path = "GridViewDemo-Prefix.pch"; sourceTree = "<group>"; };
-		C5A657B015B8255300040BDB /* MFAppDelegate.h */ = {isa = PBXFileReference; path = MFAppDelegate.h; sourceTree = "<group>"; };
+		C5A657AF15B8255300040BDB /* GridViewDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GridViewDemo-Prefix.pch"; sourceTree = "<group>"; };
+		C5A657B015B8255300040BDB /* MFAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MFAppDelegate.h; sourceTree = "<group>"; };
 		C5A657B115B8255300040BDB /* MFAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MFAppDelegate.m; sourceTree = "<group>"; };
+		C5A657BA15B8258000040BDB /* MFMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFMainViewController.h; sourceTree = "<group>"; };
+		C5A657BB15B8258000040BDB /* MFMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFMainViewController.m; sourceTree = "<group>"; };
+		C5A657BE15B8267800040BDB /* MFGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFGridView.h; sourceTree = "<group>"; };
+		C5A657BF15B8267800040BDB /* MFGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFGridView.m; sourceTree = "<group>"; };
+		C5A657C015B8267800040BDB /* MFGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFGridViewCell.h; sourceTree = "<group>"; };
+		C5A657C115B8267800040BDB /* MFGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFGridViewCell.m; sourceTree = "<group>"; };
+		C5A657C215B8267800040BDB /* MFGridViewIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFGridViewIndex.h; sourceTree = "<group>"; };
+		C5A657C315B8267800040BDB /* MFGridViewIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFGridViewIndex.m; sourceTree = "<group>"; };
+		C5A657C715B8285700040BDB /* MFCustomGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCustomGridViewCell.h; sourceTree = "<group>"; };
+		C5A657C815B8285700040BDB /* MFCustomGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MFCustomGridViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +87,8 @@
 		C5A657A715B8255300040BDB /* GridViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C5A657BD15B8267800040BDB /* Grid View */,
+				C5A657B915B8256700040BDB /* UI */,
 				C5A657B015B8255300040BDB /* MFAppDelegate.h */,
 				C5A657B115B8255300040BDB /* MFAppDelegate.m */,
 				C5A657A815B8255300040BDB /* Supporting Files */,
@@ -89,6 +106,31 @@
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
+		};
+		C5A657B915B8256700040BDB /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				C5A657BA15B8258000040BDB /* MFMainViewController.h */,
+				C5A657BB15B8258000040BDB /* MFMainViewController.m */,
+				C5A657C715B8285700040BDB /* MFCustomGridViewCell.h */,
+				C5A657C815B8285700040BDB /* MFCustomGridViewCell.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		C5A657BD15B8267800040BDB /* Grid View */ = {
+			isa = PBXGroup;
+			children = (
+				C5A657BE15B8267800040BDB /* MFGridView.h */,
+				C5A657BF15B8267800040BDB /* MFGridView.m */,
+				C5A657C015B8267800040BDB /* MFGridViewCell.h */,
+				C5A657C115B8267800040BDB /* MFGridViewCell.m */,
+				C5A657C215B8267800040BDB /* MFGridViewIndex.h */,
+				C5A657C315B8267800040BDB /* MFGridViewIndex.m */,
+			);
+			name = "Grid View";
+			path = GridView;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -154,6 +196,11 @@
 			files = (
 				C5A657AE15B8255300040BDB /* main.m in Sources */,
 				C5A657B215B8255300040BDB /* MFAppDelegate.m in Sources */,
+				C5A657BC15B8258000040BDB /* MFMainViewController.m in Sources */,
+				C5A657C415B8267800040BDB /* MFGridView.m in Sources */,
+				C5A657C515B8267800040BDB /* MFGridViewCell.m in Sources */,
+				C5A657C615B8267800040BDB /* MFGridViewIndex.m in Sources */,
+				C5A657C915B8285700040BDB /* MFCustomGridViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
