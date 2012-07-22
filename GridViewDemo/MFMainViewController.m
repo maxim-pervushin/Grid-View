@@ -74,7 +74,7 @@
 
 - (CGSize)gridViewCellSize:(MFGridView *)gridView
 {
-    return CGSizeMake(100, 200);
+    return CGSizeMake(100, 100);
 }
 
 - (MFGridViewCell *)gridView:(MFGridView *)gridView cellForIndex:(MFGridViewIndex *)index

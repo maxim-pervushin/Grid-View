@@ -100,8 +100,22 @@
                                     self.bounds.size.width, 
                                     self.bounds.size.height); 
     
-    for (NSUInteger column = 0; column < _numberOfColumns; ++column) {
-        for (NSUInteger row = 0; row < _numberOfRows; ++row) {
+    NSMutableArray *subviews = [self.subviews mutableCopy];
+    
+    NSUInteger left = visibleRect.origin.x / _cellSize.width;
+    NSUInteger right = (NSUInteger)(visibleRect.origin.x + self.bounds.size.width) / (NSUInteger)_cellSize.width;
+    NSUInteger top = visibleRect.origin.y / _cellSize.height;
+    NSUInteger bottom = (NSUInteger)(visibleRect.origin.y + self.bounds.size.height) / (NSUInteger)_cellSize.height;
+    
+//    NSLog(@"left = %u right = %u top = %u bottom = %u", left, right, top, bottom);
+    
+//    for (NSUInteger column = 0; column < _numberOfColumns; ++column) {
+//        for (NSUInteger row = 0; row < _numberOfRows; ++row) {
+    for (NSUInteger column = left; column <= right; ++column) {
+        for (NSUInteger row = top; row <= bottom ; ++row) {
+            
+//            NSLog(@"column = %u row = %u", column, row);
+            
             CGFloat x = column * _cellSize.width;
             CGFloat y = row * _cellSize.height;
             CGRect cellFrame = CGRectMake(x, y, _cellSize.width, _cellSize.height);
@@ -110,7 +124,7 @@
             index.column = column;
             index.row = row;
             
-            if (CGRectIntersectsRect(visibleRect, cellFrame)) {
+//            if (CGRectIntersectsRect(visibleRect, cellFrame)) {
                 MFGridViewCell *cell = [self getSubviewForIndex:index];
                 if (cell == nil) {
                     cell = [self cellForIndex:index];
@@ -125,37 +139,46 @@
                         [self addSubview:cell];
                     }
                 }
-            } else {
-                MFGridViewCell *cell = [self getSubviewForIndex:index];
-                if (cell != nil) {
-                    [self enqueueReusableItemView:cell];
-                }
+//            } else {
+//                NSLog(@"offscreen subview");
+                
+//                MFGridViewCell *cell = [self getSubviewForIndex:index];
+//                if (cell != nil) {
+//                    [self enqueueReusableItemView:cell];
+//                }
+            if (cell != nil) {
+                [subviews removeObject:cell];
             }
+//            }
         }
     }
+    
+    for (UIView *subview in subviews) {
+        [self enqueueReusableItemView:subview];
+    }
+    
+    [subviews release];
 }
 
 - (MFGridViewCell *)getSubviewForIndex:(MFGridViewIndex *)index
 {
     // TODO: search in self.subviews subview with corresponding index
-    
     CGFloat x = index.column * _cellSize.width;
     CGFloat y = index.row * _cellSize.height;
-//    CGRect cellFrame = CGRectMake(x, y, _cellSize.width, _cellSize.height);
+   // CGRect cellFrame = CGRectMake(x, y, _cellSize.width, _cellSize.height);
     
     NSArray *cells = self.subviews;
     for (MFGridViewCell *cell in cells) {
-//        if ([_reusableViews containsObject:cell]) {
-//            continue;
-//        }
+       // if ([_reusableViews containsObject:cell]) {
+       //     continue;
+       // }
         if (cell.hidden) { // TODO: make @property BOOL reusable for index;
             continue;
         }
         
-//        if (CGRectEqualToRect(cell.frame, cellFrame)) {
-//            return cell;
-//        }
-
+       // if (CGRectEqualToRect(cell.frame, cellFrame)) {
+       //     return cell;
+       // }
         CGPoint cellFrameOrigin = cell.frame.origin;
         if (x == cellFrameOrigin.x && y == cellFrameOrigin.y) {
             return cell;
