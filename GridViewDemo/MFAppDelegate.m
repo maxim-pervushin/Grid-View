@@ -24,7 +24,11 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 
-    application.statusBarStyle = UIStatusBarStyleBlackTranslucent;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        application.statusBarStyle = UIStatusBarStyleBlackTranslucent;
+    } else {
+        application.statusBarHidden = YES;
+    }
 
     MFMainViewController *mainViewController = [[[MFMainViewController alloc] init] autorelease];
     mainViewController.wantsFullScreenLayout = YES;

@@ -3,11 +3,18 @@
 
 #import "MFGridViewIndex.h"
 
+static NSUInteger GridViewCellInstanceCount = 0;
+
 @implementation MFGridViewCell
 @synthesize index = _index;
 
 - (void)dealloc
 {
+    --GridViewCellInstanceCount;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GridViewCellInstanceCountChanged" 
+                                                        object:[NSNumber numberWithUnsignedInteger:GridViewCellInstanceCount]];
+
     [_index release];
     [super dealloc];
 }
@@ -17,9 +24,11 @@
     self = [super initWithFrame:frame];
     
     if (self != nil) {
-        static NSUInteger instanceCount = 0;
-        ++instanceCount;
+        ++GridViewCellInstanceCount;
 
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GridViewCellInstanceCountChanged" 
+                                                            object:[NSNumber numberWithUnsignedInteger:GridViewCellInstanceCount]];
+        
         _index = nil;
     }
 

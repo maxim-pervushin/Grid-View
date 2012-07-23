@@ -14,6 +14,8 @@
     MFGridView *_gridView;
 }
 
+- (void)gridViewCellInstanceCountChanged:(NSNotification *)notification;
+
 @end
 
 @implementation MFMainViewController
@@ -37,8 +39,13 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(gridViewCellInstanceCountChanged:) 
+                                                 name:@"GridViewCellInstanceCountChanged" 
+                                               object:nil];
+    
     _gridView = [[MFGridView alloc] init];
-    _gridView.frame = self.view.frame;
+    _gridView.frame = self.view.bounds;
     _gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _gridView.dataSource = self;
     _gridView.delegate = self;
@@ -46,19 +53,25 @@
     [self.view addSubview:_gridView];
     
     [_gridView reloadData];
-    
-    self.title = @"FooBarBaz";
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
+}
+
+- (void)gridViewCellInstanceCountChanged:(NSNotification *)notification
+{
+    NSNumber *gridViewCellInstanceCount = (NSNumber *)notification.object;
+    
+    self.title = [NSString stringWithFormat:@"Cell instances number: %@", gridViewCellInstanceCount];
 }
 
 #pragma mark - MFGridViewDataSource
