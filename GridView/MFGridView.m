@@ -15,7 +15,6 @@
 }
 
 - (void)updateSubviews;
-//- (MFGridViewCell *)getSubviewForIndex:(NSUInteger)index;
 - (MFGridViewCell *)getSubviewForIndex:(MFGridViewIndex *)index;
 - (void)enqueueReusableItemView:(MFGridViewCell *)itemView;
 - (void)tapGesture:(UITapGestureRecognizer *)recognizer;
@@ -95,6 +94,10 @@
 
 - (void)updateSubviews
 {
+    if (_cellSize.width == 0 || _cellSize.height == 0) {
+        return;
+    }
+
     CGRect visibleRect = CGRectMake(self.contentOffset.x, 
                                     self.contentOffset.y, 
                                     self.bounds.size.width, 
@@ -102,59 +105,49 @@
     
     NSMutableArray *subviews = [self.subviews mutableCopy];
     
-    NSUInteger left = visibleRect.origin.x / _cellSize.width;
-    NSUInteger right = (NSUInteger)(visibleRect.origin.x + self.bounds.size.width) / (NSUInteger)_cellSize.width;
-    NSUInteger top = visibleRect.origin.y / _cellSize.height;
-    NSUInteger bottom = (NSUInteger)(visibleRect.origin.y + self.bounds.size.height) / (NSUInteger)_cellSize.height;
+    CGFloat leftf = visibleRect.origin.x / _cellSize.width;
+    CGFloat rightf = (MIN(visibleRect.origin.x + self.bounds.size.width, self.contentSize.width - 1)) / _cellSize.width;
+    CGFloat topf = visibleRect.origin.y / _cellSize.height;
+    CGFloat bottomf = (MIN(visibleRect.origin.y + self.bounds.size.height, self.contentSize.height - 1)) / _cellSize.height;
     
-//    NSLog(@"left = %u right = %u top = %u bottom = %u", left, right, top, bottom);
+    NSUInteger left = leftf >= 0 ? leftf : 0;
+    NSUInteger right = rightf >= 0 ? rightf : 0;
+    NSUInteger top = topf >= 0 ? topf : 0;
+    NSUInteger bottom = bottomf >= 0 ? bottomf : 0;
     
-//    for (NSUInteger column = 0; column < _numberOfColumns; ++column) {
-//        for (NSUInteger row = 0; row < _numberOfRows; ++row) {
     for (NSUInteger column = left; column <= right; ++column) {
         for (NSUInteger row = top; row <= bottom ; ++row) {
-            
-//            NSLog(@"column = %u row = %u", column, row);
             
             CGFloat x = column * _cellSize.width;
             CGFloat y = row * _cellSize.height;
             CGRect cellFrame = CGRectMake(x, y, _cellSize.width, _cellSize.height);
-
+            
             MFGridViewIndex *index =[[[MFGridViewIndex alloc] init] autorelease];
             index.column = column;
             index.row = row;
             
-//            if (CGRectIntersectsRect(visibleRect, cellFrame)) {
-                MFGridViewCell *cell = [self getSubviewForIndex:index];
-                if (cell == nil) {
-                    cell = [self cellForIndex:index];
-                }
+            MFGridViewCell *cell = [self getSubviewForIndex:index];
+            if (cell == nil) {
+                cell = [self cellForIndex:index];
+            }
+            
+            if (cell != nil) {
+                cell.index = index;
+                cell.frame = cellFrame;
+                cell.hidden = NO;
                 
-                if (cell != nil) {
-                    cell.index = index;
-                    cell.frame = cellFrame;
-                    cell.hidden = NO;
-                    
-                    if (![self.subviews containsObject:cell]) {
-                        [self addSubview:cell];
-                    }
+                if (![self.subviews containsObject:cell]) {
+                    [self addSubview:cell];
                 }
-//            } else {
-//                NSLog(@"offscreen subview");
-                
-//                MFGridViewCell *cell = [self getSubviewForIndex:index];
-//                if (cell != nil) {
-//                    [self enqueueReusableItemView:cell];
-//                }
+            }
             if (cell != nil) {
                 [subviews removeObject:cell];
             }
-//            }
-        }
     }
+}
     
-    for (UIView *subview in subviews) {
-        [self enqueueReusableItemView:subview];
+    for (MFGridViewCell *subview in subviews) {
+        [self enqueueReusableItemView:(MFGridViewCell *)subview];
     }
     
     [subviews release];
