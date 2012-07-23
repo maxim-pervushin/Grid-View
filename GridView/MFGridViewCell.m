@@ -6,15 +6,23 @@
 @implementation MFGridViewCell
 @synthesize index = _index;
 
+- (void)dealloc
+{
+    [_index release];
+    [super dealloc];
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
-        _index = nil;
- 
+    
+    if (self != nil) {
         static NSUInteger instanceCount = 0;
-        NSLog(@"instanceCount = %u", ++instanceCount);
+        ++instanceCount;
+
+        _index = nil;
     }
+
     return self;
 }
 

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MFGridView.h"
 
-@interface MFMainViewController : UIViewController <MFGridViewDataSource>
+@interface MFMainViewController : UIViewController <MFGridViewDataSource, MFGridViewDelegate>
 
 @end

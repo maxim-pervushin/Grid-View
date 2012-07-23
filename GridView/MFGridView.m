@@ -10,19 +10,18 @@
     NSUInteger _numberOfRows;
     NSUInteger _numberOfColumns;
     CGSize _cellSize;
-    MFGridViewOrientation _orientation;
-    NSMutableArray *_reusableViews;
+    NSMutableSet *_reusableCells;
 }
 
 - (void)updateSubviews;
 - (MFGridViewCell *)getSubviewForIndex:(MFGridViewIndex *)index;
 - (void)enqueueReusableItemView:(MFGridViewCell *)itemView;
 - (void)tapGesture:(UITapGestureRecognizer *)recognizer;
-- (MFGridViewIndex *)indexForPoint:(CGPoint)point;
+- (MFGridViewIndex *)indexAtPoint:(CGPoint)point;
 
-// delegate
+#pragma mark delegate
 - (void)didSelectCellAtIndex:(MFGridViewIndex *)index;
-// data source
+#pragma mark data source
 - (NSUInteger)numberOfRows;
 - (NSUInteger)numberOfColumns;
 - (CGSize)cellSize;
@@ -36,28 +35,20 @@
 
 - (void)dealloc
 {
-    [_reusableViews release];
+    [_reusableCells release];
     [super dealloc];
-}
-
-- (id)initWithOrientation:(MFGridViewOrientation)orientation
-{
-    self = [self initWithFrame:CGRectZero];
-    
-    if (self != nil) {
-        _numberOfRows = 0;
-        _cellSize = CGSizeZero;
-        _orientation = orientation;
-        _reusableViews = [[NSMutableArray alloc] init];
-    }
-    
-    return self;
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
+    
+    if (self != nil) {
+        _numberOfRows = 0;
+        _numberOfColumns = 0;
+        _cellSize = CGSizeZero;
+        _reusableCells = [[NSMutableSet alloc] init];
+
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator = NO;
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] 
@@ -65,6 +56,7 @@
         [self addGestureRecognizer:tapGestureRecognizer];
         [tapGestureRecognizer release];
     }
+    
     return self;
 }
 
@@ -75,22 +67,7 @@
     [self updateSubviews];
 }
 
-- (void)reloadData
-{
-    NSArray *items = self.subviews;
-    for (MFGridViewCell *item in items) {
-        [self enqueueReusableItemView:item];
-    }
-    
-    _numberOfRows = [self numberOfRows];
-    _numberOfColumns = [self numberOfColumns];
-    _cellSize = [self cellSize];
-    
-    self.contentSize = CGSizeMake(_numberOfColumns * _cellSize.width, 
-                                  _numberOfRows * _cellSize.height);
-    
-    [self updateSubviews];
-}
+#pragma mark - private methods
 
 - (void)updateSubviews
 {
@@ -155,27 +132,18 @@
 
 - (MFGridViewCell *)getSubviewForIndex:(MFGridViewIndex *)index
 {
-    // TODO: search in self.subviews subview with corresponding index
-    CGFloat x = index.column * _cellSize.width;
-    CGFloat y = index.row * _cellSize.height;
-   // CGRect cellFrame = CGRectMake(x, y, _cellSize.width, _cellSize.height);
-    
     NSArray *cells = self.subviews;
+    
     for (MFGridViewCell *cell in cells) {
-       // if ([_reusableViews containsObject:cell]) {
-       //     continue;
-       // }
-        if (cell.hidden) { // TODO: make @property BOOL reusable for index;
+
+        if (cell.index == nil) {
             continue;
         }
         
-       // if (CGRectEqualToRect(cell.frame, cellFrame)) {
-       //     return cell;
-       // }
-        CGPoint cellFrameOrigin = cell.frame.origin;
-        if (x == cellFrameOrigin.x && y == cellFrameOrigin.y) {
+        if (cell.index != nil && cell.index.row == index.row && cell.index.column == index.column) {
             return cell;
         }
+    
     }
     
     return nil;
@@ -185,19 +153,7 @@
 {
     itemView.index = nil;
     itemView.hidden = YES;
-    [_reusableViews addObject:itemView];
-}
-
-- (MFGridViewCell *)dequeueReusableItemView
-{
-    if (_reusableViews.count == 0) {
-        return nil;
-    }
-    
-    MFGridViewCell *reusableView = [_reusableViews objectAtIndex:0];
-    [_reusableViews removeObject:reusableView];
-    
-    return reusableView;
+    [_reusableCells addObject:itemView];
 }
 
 - (void)tapGesture:(UITapGestureRecognizer *)recognizer
@@ -219,7 +175,7 @@
                                                   }];
                              }];
             
-            MFGridViewIndex *index = [self indexForPoint:location];
+            MFGridViewIndex *index = [self indexAtPoint:location];
             
             if (index != nil) {
                 [self didSelectCellAtIndex:index];
@@ -230,7 +186,7 @@
     }
 }
 
-- (MFGridViewIndex *)indexForPoint:(CGPoint)point
+- (MFGridViewIndex *)indexAtPoint:(CGPoint)point
 {
     NSArray *subviews = self.subviews;
     for (MFGridViewCell *subview in subviews) {
@@ -244,6 +200,37 @@
     }
     
     return nil;
+}
+
+#pragma mark - public methods
+
+- (void)reloadData
+{
+    NSArray *items = self.subviews;
+    for (MFGridViewCell *item in items) {
+        [self enqueueReusableItemView:item];
+    }
+    
+    _numberOfRows = [self numberOfRows];
+    _numberOfColumns = [self numberOfColumns];
+    _cellSize = [self cellSize];
+    
+    self.contentSize = CGSizeMake(_numberOfColumns * _cellSize.width, 
+                                  _numberOfRows * _cellSize.height);
+    
+    [self updateSubviews];
+}
+
+- (MFGridViewCell *)dequeueReusableItemView
+{
+    if (_reusableCells.count == 0) {
+        return nil;
+    }
+    
+    MFGridViewCell *reusableView = [_reusableCells anyObject];
+    [_reusableCells removeObject:reusableView];
+    
+    return reusableView;
 }
 
 #pragma mark - delegate

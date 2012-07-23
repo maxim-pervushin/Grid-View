@@ -37,10 +37,11 @@
 {
     [super viewDidLoad];
     
-    _gridView = [[MFGridView alloc] initWithOrientation:MFGridViewOrientationVertical];
+    _gridView = [[MFGridView alloc] init];
     _gridView.frame = self.view.frame;
     _gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _gridView.dataSource = self;
+    _gridView.delegate = self;
     _gridView.backgroundColor = [UIColor orangeColor];
     [self.view addSubview:_gridView];
     
@@ -88,5 +89,11 @@
     return cell;
 }
 
+#pragma mark - MFGridViewDelegate
+
+- (void)gridView:(MFGridView *)gridView didSelectCellAtIndex:(MFGridViewIndex *)index
+{
+    NSLog(@"didSelectCellAtIndex:%@", index);
+}
 
 @end
