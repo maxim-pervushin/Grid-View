@@ -8,6 +8,7 @@
 
 #import "MFMainViewController.h"
 #import "MFCustomGridViewCell.h"
+#import "MFGridViewIndex.h"
 
 @interface MFMainViewController ()
 {

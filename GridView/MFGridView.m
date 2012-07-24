@@ -14,7 +14,7 @@
 }
 
 - (void)updateSubviews;
-- (MFGridViewCell *)getSubviewForIndex:(MFGridViewIndex *)index;
+- (MFGridViewCell *)subviewForIndex:(MFGridViewIndex *)index;
 - (void)enqueueReusableItemView:(MFGridViewCell *)itemView;
 - (void)tapGesture:(UITapGestureRecognizer *)recognizer;
 - (MFGridViewIndex *)indexAtPoint:(CGPoint)point;
@@ -82,6 +82,7 @@
     
     NSMutableArray *subviews = [self.subviews mutableCopy];
     
+    // Determine left, right, top and bottom visible rects.
     CGFloat leftf = visibleRect.origin.x / _cellSize.width;
     CGFloat rightf = (MIN(visibleRect.origin.x + self.bounds.size.width, self.contentSize.width - 1)) / _cellSize.width;
     CGFloat topf = visibleRect.origin.y / _cellSize.height;
@@ -92,6 +93,7 @@
     NSUInteger top = topf >= 0 ? topf : 0;
     NSUInteger bottom = bottomf >= 0 ? bottomf : 0;
     
+    // Enumerate visible cells.
     for (NSUInteger column = left; column <= right; ++column) {
         for (NSUInteger row = top; row <= bottom ; ++row) {
             
@@ -103,12 +105,15 @@
             index.column = column;
             index.row = row;
             
-            MFGridViewCell *cell = [self getSubviewForIndex:index];
+            // Try to find already existing cell with corresponding index.
+            MFGridViewCell *cell = [self subviewForIndex:index];
             if (cell == nil) {
+                // Request to create a new cell. 
                 cell = [self cellForIndex:index];
             }
             
             if (cell != nil) {
+                // Set up cell params.
                 cell.index = index;
                 cell.frame = cellFrame;
                 cell.hidden = NO;
@@ -116,13 +121,12 @@
                 if (![self.subviews containsObject:cell]) {
                     [self addSubview:cell];
                 }
-            }
-            if (cell != nil) {
+
                 [subviews removeObject:cell];
             }
     }
 }
-    
+    // Mark all invisible cells as reusable. 
     for (MFGridViewCell *subview in subviews) {
         [self enqueueReusableItemView:(MFGridViewCell *)subview];
     }
@@ -130,12 +134,13 @@
     [subviews release];
 }
 
-- (MFGridViewCell *)getSubviewForIndex:(MFGridViewIndex *)index
+- (MFGridViewCell *)subviewForIndex:(MFGridViewIndex *)index
 {
     NSArray *cells = self.subviews;
     
     for (MFGridViewCell *cell in cells) {
 
+        // Cells with nil index are reusable we should not check them.
         if (cell.index == nil) {
             continue;
         }
