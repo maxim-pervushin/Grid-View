@@ -19,7 +19,7 @@
 
 - (void)dealloc
 {
-    [_contentView dealloc];
+    [_contentView release];
     [super dealloc];
 }
 

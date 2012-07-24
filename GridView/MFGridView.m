@@ -18,6 +18,7 @@
 - (void)enqueueReusableItemView:(MFGridViewCell *)itemView;
 - (void)tapGesture:(UITapGestureRecognizer *)recognizer;
 - (MFGridViewIndex *)indexAtPoint:(CGPoint)point;
+- (void)didReceiveMemoryWarning:(NSNotification *)notification;
 
 #pragma mark delegate
 - (void)didSelectCellAtIndex:(MFGridViewIndex *)index;
@@ -35,6 +36,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_reusableCells release];
     [super dealloc];
 }
@@ -55,6 +57,9 @@
                                                         initWithTarget:self action:@selector(tapGesture:)];
         [self addGestureRecognizer:tapGestureRecognizer];
         [tapGestureRecognizer release];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning:) 
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     
     return self;
@@ -205,6 +210,15 @@
     }
     
     return nil;
+}
+
+- (void)didReceiveMemoryWarning:(NSNotification *)notification
+{
+    for (MFGridViewCell *reusableCell in _reusableCells) {
+        [reusableCell removeFromSuperview];
+    }
+    
+    [_reusableCells removeAllObjects];
 }
 
 #pragma mark - public methods
