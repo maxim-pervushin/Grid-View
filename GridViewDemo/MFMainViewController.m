@@ -94,7 +94,7 @@
 
 - (MFGridViewCell *)gridView:(MFGridView *)gridView cellForIndex:(MFGridViewIndex *)index
 {
-    MFCustomGridViewCell *cell = (MFCustomGridViewCell *)[gridView dequeueReusableItemView];
+    MFCustomGridViewCell *cell = (MFCustomGridViewCell *)[gridView dequeueReusableCell];
     
     if (cell == nil) {
         cell = [[[MFCustomGridViewCell alloc] init] autorelease];

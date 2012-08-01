@@ -28,6 +28,6 @@
 @property (assign, nonatomic) id<MFGridViewDataSource> dataSource;
 
 - (void)reloadData;
-- (MFGridViewCell *)dequeueReusableItemView;
+- (MFGridViewCell *)dequeueReusableCell;
 
 @end

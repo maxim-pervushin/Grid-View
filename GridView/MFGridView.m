@@ -79,7 +79,7 @@
     if (_cellSize.width == 0 || _cellSize.height == 0) {
         return;
     }
-
+    
     CGRect visibleRect = CGRectMake(self.contentOffset.x, 
                                     self.contentOffset.y, 
                                     self.bounds.size.width, 
@@ -126,11 +126,11 @@
                 if (![self.subviews containsObject:cell]) {
                     [self addSubview:cell];
                 }
-
+                
                 [subviews removeObject:cell];
             }
+        }
     }
-}
     // Mark all invisible cells as reusable. 
     for (MFGridViewCell *subview in subviews) {
         [self enqueueReusableItemView:(MFGridViewCell *)subview];
@@ -240,7 +240,7 @@
     [self updateSubviews];
 }
 
-- (MFGridViewCell *)dequeueReusableItemView
+- (MFGridViewCell *)dequeueReusableCell
 {
     if (_reusableCells.count == 0) {
         return nil;
